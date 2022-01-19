@@ -2,12 +2,9 @@ package com.polus.pos.entities;
 
 import java.util.UUID;
 
-import javax.persistence.Entity;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @NoArgsConstructor
 public class SaleItem {
@@ -15,15 +12,21 @@ public class SaleItem {
   private Product product;
   private Discount discount;
   private double price;
+  private int quantity;
 
-  public SaleItem(UUID id, Product product, Discount discount) {
+  public SaleItem(UUID id, Product product, Discount discount, int quantity) {
     this.id = id;
     this.product = product;
     this.discount = discount;
     this.price = calculatePriceWithDiscount();
+    this.quantity = quantity;
   }
 
   public double calculatePriceWithDiscount() {
+    if (this.discount == null) {
+      return getProductPrice();
+    }
+
     return getProductPrice() * (1 - (this.discount.getPercentage() / 100));
   }
 

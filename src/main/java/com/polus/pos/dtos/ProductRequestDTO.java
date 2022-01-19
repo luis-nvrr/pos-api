@@ -1,4 +1,4 @@
-package com.polus.pos.entities;
+package com.polus.pos.dtos;
 
 import org.springframework.data.annotation.Id;
 
@@ -7,25 +7,19 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Product {
+public class ProductRequestDTO {
+
   @Id
   private long barCode;
   private String description;
   private double price;
   private int available;
 
-  public Product(long barcode, String description, double price, int available) {
+  public ProductRequestDTO(long barcode, String description, double price, int available) {
     this.barCode = barcode;
     this.description = description;
     this.price = price;
     this.available = available;
   }
 
-  public void reduceAvailableBy(int quantity) {
-    this.available -= quantity;
-  }
-
-  public boolean isInStock(int quantity) {
-    return this.available - quantity >= 0;
-  }
 }

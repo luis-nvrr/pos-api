@@ -6,6 +6,9 @@ import java.util.UUID;
 
 import com.polus.pos.entities.Sale;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class SaleRepositoryImpl implements SaleRepository {
 
   private Map<UUID, Sale> repository;

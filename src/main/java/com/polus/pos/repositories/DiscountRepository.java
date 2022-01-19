@@ -7,4 +7,6 @@ import com.polus.pos.exceptions.DiscountNotFoundException;
 
 public interface DiscountRepository {
   Discount findDiscountById(UUID id) throws DiscountNotFoundException;
+
+  void saveDiscount(Discount discount);
 }

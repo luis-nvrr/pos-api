@@ -4,10 +4,12 @@ import com.polus.pos.dtos.SaleRequestDTO;
 import com.polus.pos.entities.Sale;
 import com.polus.pos.exceptions.DiscountNotFoundException;
 import com.polus.pos.exceptions.ProductNotFoundException;
+import com.polus.pos.exceptions.ProductOutOfStockException;
 import com.polus.pos.services.SaleService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -20,8 +22,9 @@ public class SaleController {
     this.saleService = saleService;
   }
 
+  @PostMapping
   public ResponseEntity<Sale> createSale(@RequestBody SaleRequestDTO saleRequestDTO)
-      throws ProductNotFoundException, DiscountNotFoundException {
+      throws ProductNotFoundException, DiscountNotFoundException, ProductOutOfStockException {
     return ResponseEntity.ok(saleService.createSale(saleRequestDTO.getItems()));
   }
 }
