@@ -19,8 +19,10 @@ public class Discount {
   private double percentage;
   private Date creationDate;
 
-  public Discount(String description, double percentage) {
+  public Discount(UUID id, String description, double percentage, Date creationDate) {
+    this.id = id;
     this.description = description;
     this.percentage = percentage;
+    this.creationDate = creationDate;
   }
 }

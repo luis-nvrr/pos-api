@@ -1,6 +1,8 @@
 package com.polus.pos.repositories;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -29,6 +31,11 @@ public class DiscountRepositoryImpl implements DiscountRepository {
   @Override
   public void saveDiscount(Discount discount) {
     this.repository.put(discount.getId(), discount);
+  }
+
+  @Override
+  public List<Discount> findAllDiscount() {
+    return new ArrayList<Discount>(this.repository.values());
   }
 
 }

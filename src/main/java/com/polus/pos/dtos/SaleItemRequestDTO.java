@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class SaleItemRequestDTO {
-  private int id;
   private long productId;
   private UUID discountId;
   private int quantity;
