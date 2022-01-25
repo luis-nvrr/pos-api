@@ -3,6 +3,7 @@ package com.polus.pos.services;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.polus.pos.dtos.SaleItemRequestDTO;
@@ -39,7 +40,13 @@ public class SaleServiceImpl implements SaleService {
 
     for (SaleItemRequestDTO item : saleRequestItems) {
       UUID id = UUID.randomUUID();
-      Product saleProduct = productRepository.findProductById(item.getProductId());
+      Optional<Product> savedProduct = productRepository.findById(item.getProductId());
+
+      if (savedProduct.isEmpty()) {
+        throw new ProductNotFoundException("Producto inválido");
+      }
+
+      Product saleProduct = savedProduct.get();
       int quantity = item.getQuantity();
 
       if (!saleProduct.isInStock(quantity)) {
@@ -48,18 +55,21 @@ public class SaleServiceImpl implements SaleService {
 
       Discount saleDiscount = null;
       if (item.hasDiscount()) {
-        saleDiscount = discountRepository.findDiscountById(item.getDiscountId());
+        Optional<Discount> savedDiscount = discountRepository.findById(item.getDiscountId());
+        if (savedDiscount.isEmpty())
+          throw new DiscountNotFoundException("Descuento inválido");
+        saleDiscount = savedDiscount.get();
       }
 
       SaleItem saleItem = new SaleItem(id, saleProduct, saleDiscount, quantity);
       saleItems.add(saleItem);
 
       saleProduct.reduceAvailableBy(quantity);
-      productRepository.saveProduct(saleProduct);
+      productRepository.save(saleProduct);
     }
 
     Sale newSale = new Sale(saleItems, new Date());
-    Sale savedSale = saleRepository.saveSale(newSale);
+    Sale savedSale = saleRepository.save(newSale);
 
     return savedSale;
   }

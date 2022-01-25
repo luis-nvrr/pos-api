@@ -2,6 +2,7 @@ package com.polus.pos.services;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.polus.pos.dtos.DiscountRequestDTO;
@@ -27,18 +28,22 @@ public class DiscountServiceImpl implements DiscountService {
     Date dateNow = new Date();
 
     Discount discount = new Discount(id, description, percentage, dateNow);
-    this.discountRepository.saveDiscount(discount);
+    this.discountRepository.save(discount);
     return discount;
   }
 
   @Override
   public Discount findDiscountById(UUID id) throws DiscountNotFoundException {
-    return this.discountRepository.findDiscountById(id);
+    Optional<Discount> savedDiscount = this.discountRepository.findById(id);
+    if (savedDiscount.isEmpty()) {
+      throw new DiscountNotFoundException("Descuento inválido");
+    }
+    return savedDiscount.get();
   }
 
   @Override
   public List<Discount> listAllDiscounts() {
-    return this.discountRepository.findAllDiscount();
+    return this.discountRepository.findAll();
   }
 
 }

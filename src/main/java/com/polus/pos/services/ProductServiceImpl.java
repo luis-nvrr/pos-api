@@ -25,13 +25,13 @@ public class ProductServiceImpl implements ProductService {
     int available = productDTO.getAvailable();
 
     Product newProduct = new Product(barCode, description, price, available);
-    productRepository.saveProduct(newProduct);
+    productRepository.save(newProduct);
     return newProduct;
   }
 
   @Override
   public List<Product> getAllProducts() {
-    return productRepository.findAllProducts();
+    return productRepository.findAll();
   }
 
 }
